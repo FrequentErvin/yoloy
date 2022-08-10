@@ -162,5 +162,3 @@ class ResNet(nn.Module):
 
         return x, h
 
-
-print('Hello Worlddddd')

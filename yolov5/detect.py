@@ -109,22 +109,12 @@ def run(
     model.warmup(imgsz=(1 if pt else bs, 3, *imgsz))  # warmup
     seen, windows, dt = 0, [], [0.0, 0.0, 0.0]
     for path, im, im0s, vid_cap, s in dataset:
-        print("Jijaijsdijqd")
-        print(dataset)
-        # print("ščščšć")
-        # print(path)
-        # print("ooooooooooo")
-        # print(im)
-        print("eeeeeeeeeee")
-        print(im0s)
         t1 = time_sync()
         im = torch.from_numpy(im).to(device)
         im = im.half() if model.fp16 else im.float()  # uint8 to fp16/32
         im /= 255  # 0 - 255 to 0.0 - 1.0
         if len(im.shape) == 3:
             im = im[None]  # expand for batch dim
-        print("ker2")
-        print(im)
         t2 = time_sync()
         dt[0] += t2 - t1
 
@@ -138,8 +128,6 @@ def run(
 
         # NMS
         pred = non_max_suppression(pred, conf_thres, iou_thres, classes, agnostic_nms, max_det=max_det)
-        print("Hello")
-        print(pred)
         dt[2] += time_sync() - t3
 
         # Second-stage classifier (optional)
@@ -147,9 +135,6 @@ def run(
 
         # Process predictions
         for i, det in enumerate(pred):  # per image
-            print("čunga lunga")
-            print(det)
-            print("žvaka")
             seen += 1
             if webcam:  # batch_size >= 1
                 p, im0, frame = path[i], im0s[i].copy(), dataset.count
@@ -187,11 +172,8 @@ def run(
                         label = None if hide_labels else (names[c] if hide_conf else f'{names[c]} {conf:.2f}')
                         annotator.box_label(xyxy, label, color=colors(c, True))
                     if save_crop:
-                        print("prije save one box", xyxy)
-                        print("IMAGE BEFORE SAVE ONE BOX", imc)
                         save_one_box(xyxy, imc, file=save_dir / 'crops' / names[c] / f'{p.stem}.jpg', BGR=True)
-                        kropt = save_one_box(xyxy, imc, file=save_dir / 'crops' / names[c] / f'{p.stem}.jpg', BGR=True)
-                        print("kropt", kropt)
+
 
             # Stream results
             im0 = annotator.result()

@@ -63,7 +63,6 @@ class prediction(Resource):
         img_tensor = img_tensor.unsqueeze_(0)
 
         predicted = model(img_tensor)
-        print(predicted)
         return predicted[0][0].argmax().item()
 
 

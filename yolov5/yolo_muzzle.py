@@ -20,21 +20,12 @@ class YoloMuzzle:
         im /= 255  # 0 - 255 to 0.0 - 1.0
         if len(im.shape) == 3:
             im = im[None]  # expand for batch dim
-        print('ker')
-        print(im)
-        pred = self.model(im, augment=False, visualize=False)
-        print('dlon')
-        print(pred)
-        pred = non_max_suppression(pred)
-        print('tlon')
-        print(pred)
-        for i, det in enumerate(pred):
+        prediction = self.model(im, augment=False, visualize=False)
+        prediction = non_max_suppression(prediction)
+        for i, det in enumerate(prediction):
             for *xyxy, conf, cls in reversed(det):
                 print("Zaba")
 
-        print("maca")
-        print("prije save one box", xyxy)
-        print("IMAGE BEFORE SAVE ONE BOX", img)
         img0 = img0s.copy()
         imc = img0.copy()
         cropped = save_one_box(xyxy, imc, BGR=False, save=False)
