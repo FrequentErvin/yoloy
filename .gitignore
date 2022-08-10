@@ -1,0 +1,5 @@
+.idea
+.idea/*
+.idea/**
+.idea/misc.xml
+yolov5/runs/**

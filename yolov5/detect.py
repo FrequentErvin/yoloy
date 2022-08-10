@@ -36,15 +36,18 @@ from utils.general import (LOGGER, check_file, check_img_size, check_imshow, che
                            increment_path, non_max_suppression, print_args, scale_coords, strip_optimizer, xyxy2xywh)
 from utils.plots import Annotator, colors, save_one_box
 from utils.torch_utils import select_device, time_sync
+from PIL import Image
 
 device = select_device('cpu')
-model = DetectMultiBackend('best.pt', device=device, dnn=False, data='yolov5/data/coco128.yaml', fp16=False)
-#stride, names, pt = model.stride, model.names, model.pt
-#imgsz = check_img_size(imgsz, s=stride)  # check image size
-#dataset = LoadImages(source, img_size=imgsz, stride=stride, auto=pt)
-#bs = 1  # batch_size
+model = DetectMultiBackend('yolov5/best.pt', device=device, dnn=False, data='yolov5/data/coco128.yaml', fp16=False)
 
-#imc = im0.copy()
+
+# stride, names, pt = model.stride, model.names, model.pt
+# imgsz = check_img_size(imgsz, s=stride)  # check image size
+# dataset = LoadImages(source, img_size=imgsz, stride=stride, auto=pt)
+# bs = 1  # batch_size
+
+# imc = im0.copy()
 @torch.no_grad()
 def run(
         weights=ROOT / 'yolov5s.pt',  # model.pt path(s)
@@ -106,26 +109,36 @@ def run(
     model.warmup(imgsz=(1 if pt else bs, 3, *imgsz))  # warmup
     seen, windows, dt = 0, [], [0.0, 0.0, 0.0]
     for path, im, im0s, vid_cap, s in dataset:
+        print("Jijaijsdijqd")
+        print(dataset)
+        # print("ščščšć")
+        # print(path)
+        # print("ooooooooooo")
+        # print(im)
+        print("eeeeeeeeeee")
+        print(im0s)
         t1 = time_sync()
-        print(im)
         im = torch.from_numpy(im).to(device)
-        print(im)
         im = im.half() if model.fp16 else im.float()  # uint8 to fp16/32
         im /= 255  # 0 - 255 to 0.0 - 1.0
         if len(im.shape) == 3:
             im = im[None]  # expand for batch dim
+        print("ker2")
+        print(im)
         t2 = time_sync()
         dt[0] += t2 - t1
 
         # Inference
         visualize = increment_path(save_dir / Path(path).stem, mkdir=True) if visualize else False
         pred = model(im, augment=augment, visualize=visualize)
-        print(pred)
+        # print("HI")
+        # print(pred)
         t3 = time_sync()
         dt[1] += t3 - t2
 
         # NMS
         pred = non_max_suppression(pred, conf_thres, iou_thres, classes, agnostic_nms, max_det=max_det)
+        print("Hello")
         print(pred)
         dt[2] += time_sync() - t3
 
@@ -134,6 +147,9 @@ def run(
 
         # Process predictions
         for i, det in enumerate(pred):  # per image
+            print("čunga lunga")
+            print(det)
+            print("žvaka")
             seen += 1
             if webcam:  # batch_size >= 1
                 p, im0, frame = path[i], im0s[i].copy(), dataset.count
@@ -159,6 +175,7 @@ def run(
 
                 # Write results
                 for *xyxy, conf, cls in reversed(det):
+                    print(xyxy)
                     if save_txt:  # Write to file
                         xywh = (xyxy2xywh(torch.tensor(xyxy).view(1, 4)) / gn).view(-1).tolist()  # normalized xywh
                         line = (cls, *xywh, conf) if save_conf else (cls, *xywh)  # label format
@@ -170,7 +187,11 @@ def run(
                         label = None if hide_labels else (names[c] if hide_conf else f'{names[c]} {conf:.2f}')
                         annotator.box_label(xyxy, label, color=colors(c, True))
                     if save_crop:
+                        print("prije save one box", xyxy)
+                        print("IMAGE BEFORE SAVE ONE BOX", imc)
                         save_one_box(xyxy, imc, file=save_dir / 'crops' / names[c] / f'{p.stem}.jpg', BGR=True)
+                        kropt = save_one_box(xyxy, imc, file=save_dir / 'crops' / names[c] / f'{p.stem}.jpg', BGR=True)
+                        print("kropt", kropt)
 
             # Stream results
             im0 = annotator.result()
