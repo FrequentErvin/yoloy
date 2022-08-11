@@ -79,28 +79,33 @@ krave = ['0706',
 ]
 # prediction api call
 class prediction(Resource):
+
+    objectDetectionModel = YoloMuzzle()
     def post(self):
         f = request.files['image']
         img = Image.open(BytesIO(f.read())).convert('RGB')
+        img.show()
         img0s = np.array(img)  # expecting cv2 imread
         return self.processNumpyArray(img0s)
 
 
     def processNumpyArray(self, img0s):
-        Image.fromarray(img0s, 'RGB').show()
+        # Image.fromarray(img0s, 'RGB').show()
         # YOLO PART
-        objectDetectionModel = YoloMuzzle()
 
         img = letterbox(img0s, 640, 32, auto=True)[0]
+        Image.fromarray(img, 'RGB').show()
         img = img.transpose((2, 0, 1))[::-1]  # HWC to CHW, BGR to RGB
         img = np.ascontiguousarray(img)
-        pred = objectDetectionModel.detect(img, img0s)  # returns numpy array
+        pred = self.objectDetectionModel.detect(img, img0s)  # returns numpy array
         # YOLO END
 
         img_tensor = preprocess(pred).float()  # expecting PIL image for input here
         img_tensor = img_tensor.unsqueeze_(0)
 
         predicted = model(img_tensor)
+        print(predicted)
+        print(predicted[1])
         return krave[predicted[0][0].argmax().item()]
 
 
