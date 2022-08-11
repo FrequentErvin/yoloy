@@ -107,14 +107,14 @@ def process_wandb_config_ddp_mode(opt):
 
 
 class WandbLogger():
-    """Log training runs, datasets, models, and predictions to Weights & Biases.
+    """Log training runs, datasets, models_dir, and predictions to Weights & Biases.
 
     This logger sends information to W&B at wandb.ai. By default, this information
     includes hyperparameters, system configuration and metrics, model metrics,
     and basic data metrics and analyses.
 
     By providing additional command line arguments to train.py, datasets,
-    models and predictions can also be logged.
+    models_dir and predictions can also be logged.
 
     For more on how this logger is used, see the Weights & Biases documentation:
     https://docs.wandb.com/guides/integrations/yolov5
@@ -214,7 +214,7 @@ class WandbLogger():
 
     def setup_training(self, opt):
         """
-        Setup the necessary processes for training YOLO models:
+        Setup the necessary processes for training YOLO models_dir:
           - Attempt to download model checkpoint and dataset artifacts if opt.resume stats with WANDB_ARTIFACT_PREFIX
           - Update data_dict, to contain info of previous run if resumed and the paths of dataset artifact if downloaded
           - Setup log_dict, initialize bbox_interval

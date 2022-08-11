@@ -50,14 +50,14 @@ def construct_dataset(clearml_info_string):
 
 
 class ClearmlLogger:
-    """Log training runs, datasets, models, and predictions to ClearML.
+    """Log training runs, datasets, models_dir, and predictions to ClearML.
 
     This logger sends information to ClearML at app.clear.ml or to your own hosted server. By default,
     this information includes hyperparameters, system configuration and metrics, model metrics, code information and
     basic data metrics and analyses.
 
     By providing additional command line arguments to train.py, datasets,
-    models and predictions can also be logged.
+    models_dir and predictions can also be logged.
     """
 
     def __init__(self, opt, hyp):

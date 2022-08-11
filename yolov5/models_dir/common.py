@@ -318,6 +318,8 @@ class DetectMultiBackend(nn.Module):
         #   TensorFlow GraphDef:            *.pb
         #   TensorFlow Lite:                *.tflite
         #   TensorFlow Edge TPU:            *_edgetpu.tflite
+        import sys
+        # sys.path.insert(0, "./yolov5")
         from models.experimental import attempt_download, attempt_load  # scoped to avoid circular import
 
         super().__init__()

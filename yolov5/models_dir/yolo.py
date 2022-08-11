@@ -3,7 +3,7 @@
 YOLO-specific modules
 
 Usage:
-    $ python path/to/models/yolo.py --cfg yolov5s.yaml
+    $ python path/to/models_dir/yolo.py --cfg yolov5s.yaml
 """
 
 import argparse
@@ -326,8 +326,8 @@ if __name__ == '__main__':
     elif opt.profile:  # profile forward-backward
         results = profile(input=im, ops=[model], n=3)
 
-    elif opt.test:  # test all models
-        for cfg in Path(ROOT / 'models').rglob('yolo*.yaml'):
+    elif opt.test:  # test all models_dir
+        for cfg in Path(ROOT / 'models_dir').rglob('yolo*.yaml'):
             try:
                 _ = Model(cfg)
             except Exception as e:
