@@ -326,9 +326,9 @@ class DetectMultiBackend(nn.Module):
         w = attempt_download(w)  # download if not local
         fp16 &= (pt or jit or onnx or engine) and device.type != 'cpu'  # FP16
         stride, names = 32, [f'class{i}' for i in range(1000)]  # assign defaults
-        if data:  # assign class names (optional)
-            with open(data, errors='ignore') as f:
-                names = yaml.safe_load(f)['names']
+        # if data:  # assign class names (optional)
+        #     with open(data, errors='ignore') as f:
+        #         names = yaml.safe_load(f)['names']
 
         if pt:  # PyTorch
             model = attempt_load(weights if isinstance(weights, list) else w, device=device, inplace=True, fuse=fuse)

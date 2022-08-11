@@ -473,7 +473,6 @@ def profile_idetection(start=0, stop=0, labels=(), save_dir=''):
 
 
 def save_one_box(xyxy, im, file=Path('im.jpg'), gain=1.02, pad=10, square=False, BGR=False, save=True):
-    print("Prije svega u save one box", xyxy)
     # Save image crop as {file} with crop size multiple {gain} and {pad} pixels. Save and/or return crop
     xyxy = torch.tensor(xyxy).view(-1, 4)
     b = xyxy2xywh(xyxy)  # boxes
@@ -481,12 +480,11 @@ def save_one_box(xyxy, im, file=Path('im.jpg'), gain=1.02, pad=10, square=False,
         b[:, 2:] = b[:, 2:].max(1)[0].unsqueeze(1)  # attempt rectangle to square
     b[:, 2:] = b[:, 2:] * gain + pad  # box wh * gain + pad
     xyxy = xywh2xyxy(b).long()
-    print("IMAGE HERE ", im)
-    print("IMAGE SHAPE", im.shape)
+    # print("IMAGE HERE ", im)
+    # print("IMAGE SHAPE", im.shape)
     clip_coords(xyxy, im.shape)
-    print("printxy", xyxy)
     crop = im[int(xyxy[0, 1]):int(xyxy[0, 3]), int(xyxy[0, 0]):int(xyxy[0, 2]), ::(1 if BGR else -1)]
-    print("pravi crop unutar S O B", crop)
+    # print("pravi crop unutar S O B", crop)
     # print(crop)
     if save:
         file.parent.mkdir(parents=True, exist_ok=True)  # make directory
