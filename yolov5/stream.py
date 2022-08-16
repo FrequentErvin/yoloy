@@ -2,10 +2,8 @@ import cv2
 from app import prediction
 from PIL import Image
 import numpy as np
-USERNAME = "admin"
-PASSWORD = "A1s2d3f4"
 
-RTSP_URL = f"rtsp://{USERNAME}:{PASSWORD}@izvansvemirac.ddnsfree.com:554/ISAPI/Streaming/Channels/101"
+
 instance = prediction()
 
 try:
